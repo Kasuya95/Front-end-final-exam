@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router";
-import Home from "../pages/home";
+import Home from "../pages/Home";
 import  Books  from "../pages/books/books";
 import Journals from "../pages/journals/journals";
 import Comics from "../pages/comics/comics";

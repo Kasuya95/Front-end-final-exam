@@ -1,6 +1,6 @@
 import React from 'react'
 
-export  const Home = () => {
+  const Home = () => {
   return (
     <div>
         <a class="btn btn-outline" href='/books'>books</a>
