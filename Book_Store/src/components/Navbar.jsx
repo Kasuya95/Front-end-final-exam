@@ -6,16 +6,16 @@ const Navbar = () => {
   
   const menuItems = [
     {
-      name: "Add restaurant",
-      url: "/AddRestaurant",
+      name: "Books",
+      url: "/books",
     },
     {
-      name: "Search",
-      url: "/",
+      name: "Journals",
+      url: "/journals",
     },
     {
-      name: "About Us",
-      url: "/",
+      name: "Comics",
+      url: "/comics",
     },
   ];
   return (

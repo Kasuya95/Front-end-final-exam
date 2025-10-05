@@ -8,27 +8,27 @@ const getAllBooks = async () =>{
     
 }
 //get restaurant by Id
-const getBooksByID = async (id) => {
-  return await api.get(Book_API +"/"+ id);
+const getBookByID = async (itemId) => {
+  return await api.get(Book_API +"/"+ itemId);
 };
 //update restaurant by Id
-const updateBooks = async (id,books) => {
-  return await api.put(Book_API +"/"+ id,books);
+const updateBooks = async (itemId,book) => {
+  return await api.put(Book_API +"/"+ itemId,book);
 };
 //add restaurant
 const addBooks = async (books) => {
   return await api.post(Book_API, books);
 };
 //delete restaurant
-const deleteBooks = async (id) => {
-  return await api.delete(Book_API + "/" + id);
+const deleteBook = async (itemId) => {
+  return await api.delete(Book_API + "/" + itemId);
 };
 
 const BooksService ={
     getAllBooks,
-    getBooksByID,
+    getBookByID,
     updateBooks,
     addBooks,
-    deleteBooks
+    deleteBook
 }
 export default BooksService

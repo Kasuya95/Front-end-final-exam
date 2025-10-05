@@ -1,351 +1,120 @@
-import React from 'react'
-import { useState } from 'react'
-import { useNavigate } from 'react-router'
-import BooksService from '../../services/books.service'
-import Swal  from 'sweetalert2'
- const Addbook = () => {
-    const navigate = useNavigate();
-    const formatDate = (ts) =>
-    ts ? new Date(Number(ts)).toISOString().split("T")[0] : "";
-  const toTimestamp = (dateStr) => new Date(dateStr).getTime();
-    const [books, setBooks] =useState({
-        title: "",
-            author: "",
-            category: "",
-            publishYear: "",
-            isbn: "",
-            status: "",
-            coverImage: "",
-            description: "",
-            location: "",
-            addedDate: "",
-            itemType: "",
-            publisher: "",
-            edition: "",
-            pageCount: "",
-            language: "",
-            genre: "",
-            createdAt: Date.now(),
-            updatedAt: Date.now(),
-            deletedAt: null
-    })
-    const handleChange = (e) => {
-        const {name , value}= e.target
-        setBooks((prev) => ({...prev,[name]:value}))
-    };
-      const handleSubmit = async () => {
+import React, { useState } from "react";
+import { useNavigate } from "react-router";
+import BooksService from "../../services/books.service";
+import Swal from "sweetalert2";
+
+const AddBooks = () => {
+  const navigate = useNavigate();
+  const [books, setBooks] = useState({
+    title: "",
+    author: "",
+    category: "",
+    publishYear: "",
+    isbn: "",
+    publisher: "",
+    edition: "",
+    pageCount: "",
+    language: "",
+    genre: "",
+    description: "",
+    coverImage: "",
+    location: "",
+    
+  });
+
+  const handleChange = (e) => {
+    const { name, value, type } = e.target;
+    setBooks((prev) => ({
+      ...prev,
+      [name]: type === "number" ? (value === "" ? "" : Number(value)) : value,
+    }));
+  };
+
+  const handleSubmit = async () => {
     try {
-      const newbook = await BooksService.addBooks(books);
-      console.log(newbook);
-      if (newbook.status === 200) {
+      const res = await BooksService.addBooks(books);
+      if (res.status === 201) {
         Swal.fire({
-          title: "Add new book",
-          text: "Add new book successfully!",
+          title: "Success",
+          text: "Book added successfully!",
           icon: "success",
-        }).then(() => {
-          setBooks({
-           title: "",
-            author: "",
-            category: "",
-            publishYear: "",
-            isbn: "",
-            status: "",
-            coverImage: "",
-            description: "",
-            location: "",
-            addedDate: "",
-            itemType: "",
-            publisher: "",
-            edition: "",
-            pageCount: "",
-            language: "",
-            genre: "",
-            createdAt: Date.now(),
-            updatedAt: Date.now(),
-            deletedAt: null
-          });
-          navigate("/");
-        });
+          confirmButtonColor: "#6366f1",
+        }).then(() => navigate("/"));
       }
-      //   ถ้า error จะมาที่รนี้เลย
-    } catch (error) {
+    } catch (err) {
       Swal.fire({
-        title: "Add new book",
-        text: error?.response?.data?.message || error.message,
+        title: "Error",
+        text: err?.response?.data?.message || err.message,
         icon: "error",
+        confirmButtonColor: "#ef4444",
       });
     }
   };
+
+  const fields = [
+    { label: "Title", name: "title", type: "text", placeholder: "Enter book title" },
+    { label: "Author", name: "author", type: "text", placeholder: "Enter author's name" },
+    { label: "Category", name: "category", type: "text", placeholder: "Fiction, Non-fiction, etc." },
+    { label: "Publish Year", name: "publishYear", type: "number", placeholder: "e.g. 2025" },
+    { label: "ISBN", name: "isbn", type: "text", placeholder: "Enter ISBN number" },
+    { label: "Publisher", name: "publisher", type: "text", placeholder: "Publisher name" },
+    { label: "Edition", name: "edition", type: "text", placeholder: "e.g. First Edition" },
+    { label: "Page Count", name: "pageCount", type: "number", placeholder: "Number of pages" },
+    { label: "Language", name: "language", type: "text", placeholder: "English, Thai, etc." },
+    { label: "Genre", name: "genre", type: "text", placeholder: "Fiction, Science, etc." },
+    { label: "Description", name: "description", type: "text", placeholder: "Short description of the book" },
+    { label: "Cover Image (URL)", name: "coverImage", type: "text", placeholder: "Paste image URL here" },
+    { label: "Location", name: "location", type: "text", placeholder: "e.g. A1-B2-C3" },
+  ];
+
   return (
-    <form className="space-y-6">
-          <div>
-            <label
-              htmlFor="name"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Title
-            </label>
-            <input
-              id="name"
-              name="name"
-              type="text"
-              required
-              onChange={handleChange}
-              value={books.title}
-              className="mt-2 block w-full rounded-md border px-3 py-2 text-gray-900 shadow-sm placeholder:text-gray-400 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-            />
-          </div>
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-indigo-100 via-blue-50 to-white px-6 py-12">
+      <div className="w-full max-w-md space-y-8 rounded-2xl bg-white p-10 shadow-2xl border border-gray-100">
+        <div className="text-center mb-6">
+          <h2 className="text-3xl font-extrabold text-gray-800">Add New Book</h2>
+          <p className="text-gray-500 text-sm mt-1">เพิ่มหนังสือ</p>
+        </div>
 
-          <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Author
-            </label>
-            <input
-              id="author"
-              name="author"
-              type="text"
-              required
-              onChange={handleChange}
-              value={books.author}
-              className="mt-2 block w-full rounded-md border px-3 py-2 text-gray-900 shadow-sm placeholder:text-gray-400 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-            />
-          </div>
+        <form className="space-y-5">
+          {fields.map((field) => (
+            <div key={field.name}>
+              <label className="block text-sm font-medium text-gray-700 mb-1">{field.label}</label>
+              <input
+                type={field.type}
+                name={field.name}
+                value={books[field.name]}
+                onChange={handleChange}
+                placeholder={field.placeholder}
+                required
+                className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-400 transition duration-150 ease-in-out"
+              />
+            </div>
+          ))}
 
-            <div>
-            Category
-            <input
-              id="type"
-              name="type"
-              type="text"
-              required
-              onChange={handleChange}
-              value={books.category}
-              className="mt-2 block w-full rounded-md border px-3 py-2 text-gray-900 shadow-sm placeholder:text-gray-400 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-            />
-          </div>
-          <div>
-            
-            <input
-              id="type"
-              name="type"
-              type="text"
-              required
-              onChange={handleChange}
-              value={books.type}
-              className="mt-2 block w-full rounded-md border px-3 py-2 text-gray-900 shadow-sm placeholder:text-gray-400 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-            />
-          </div>
-
-          <div>
-            <label
-              htmlFor="school"
-              className="block text-sm font-medium text-gray-700"
-            >
-              level
-            </label>
-            <input
-              id="level"
-              name="level"
-              type="text"
-              required
-              onChange={handleChange}
-              value={books.level}
-              className="mt-2 block w-full rounded-md border px-3 py-2 text-gray-900 shadow-sm placeholder:text-gray-400 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-            />
-          </div>
-
-          <div>
-            <label
-              htmlFor="phone"
-              className="block text-sm font-medium text-gray-700"
-            >
-              team_size
-            </label>
-            <input
-              id="team_size"
-              name="team_size"
-              type="number"
-              required
-              onChange={handleChange}
-              value={books.team_size}
-              className="mt-2 block w-full rounded-md border px-3 py-2 text-gray-900 shadow-sm placeholder:text-gray-400 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-            />
-          </div>
-
-          <div>
-            <label
-              htmlFor="phone"
-              className="block text-sm font-medium text-gray-700"
-            >
-              date
-            </label>
-            <input
-              id="date"
-              name="date"
-              type="date"
-              required
-              onChange={(e) =>
-                setActivity((prev) => ({
-                  ...prev,
-                  date: toTimestamp(e.target.value),
-                }))
-              }
-              value={formatDate(books.date)}
-              className="mt-2 block w-full rounded-md border px-3 py-2 text-gray-900 shadow-sm placeholder:text-gray-400 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-            />
-          </div>
-
-          <div>
-            <label
-              htmlFor="phone"
-              className="block text-sm font-medium text-gray-700"
-            >
-              location
-            </label>
-            <input
-              id="location"
-              name="location"
-              type="text"
-              required
-              onChange={handleChange}
-              value={books.location}
-              className="mt-2 block w-full rounded-md border px-3 py-2 text-gray-900 shadow-sm placeholder:text-gray-400 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-            />
-          </div>
-
-          <div>
-            <label
-              htmlFor="phone"
-              className="block text-sm font-medium text-gray-700"
-            >
-              reg_open
-            </label>
-            <input
-              id="reg_open"
-              name="reg_open"
-              type="date"
-              required
-              onChange={(e) =>
-                setActivity((prev) => ({
-                  ...prev,
-                  reg_open: toTimestamp(e.target.value),
-                }))
-              }
-              value={formatDate(books.reg_open)}
-              className="mt-2 block w-full rounded-md border px-3 py-2 text-gray-900 shadow-sm placeholder:text-gray-400 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-            />
-          </div>
-
-          <div>
-            <label
-              htmlFor="phone"
-              className="block text-sm font-medium text-gray-700"
-            >
-              reg_close
-            </label>
-            <input
-              id="reg_close"
-              name="reg_close"
-              type="date"
-              required
-              onChange={(e) =>
-                setActivity((prev) => ({
-                  ...prev,
-                  reg_close: toTimestamp(e.target.value),
-                }))
-              }
-              value={formatDate(books.reg_close)}
-              className="mt-2 block w-full rounded-md border px-3 py-2 text-gray-900 shadow-sm placeholder:text-gray-400 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-            />
-          </div>
-
-          <div>
-            <label
-              htmlFor="phone"
-              className="block text-sm font-medium text-gray-700"
-            >
-              contact_name
-            </label>
-            <input
-              id="contact_name"
-              name="contact_name"
-              type="text"
-              required
-              onChange={handleChange}
-              value={books.contact_name}
-              className="mt-2 block w-full rounded-md border px-3 py-2 text-gray-900 shadow-sm placeholder:text-gray-400 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-            />
-          </div>
-
-          <div>
-            <label
-              htmlFor="phone"
-              className="block text-sm font-medium text-gray-700"
-            >
-              contact_phone
-            </label>
-            <input
-              id="contact_phone"
-              name="contact_phone"
-              type="text"
-              required
-              onChange={handleChange}
-              value={books.contact_phone}
-              className="mt-2 block w-full rounded-md border px-3 py-2 text-gray-900 shadow-sm placeholder:text-gray-400 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-            />
-          </div>
-
-          <div>
-            <label
-              htmlFor="phone"
-              className="block text-sm font-medium text-gray-700"
-            >
-              contact_email
-            </label>
-            <input
-              id="contact_email"
-              name="contact_email"
-              type="text"
-              required
-              onChange={handleChange}
-              value={books.contact_email}
-              className="mt-2 block w-full rounded-md border px-3 py-2 text-gray-900 shadow-sm placeholder:text-gray-400 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-            />
-          </div>
-
-          <div>
-            <label
-              htmlFor="phone"
-              className="block text-sm font-medium text-gray-700"
-            >
-              status
-            </label>
-            <input
-              id="status"
-              name="status"
-              type="text"
-              required
-              onChange={handleChange}
-              value={books.status}
-              className="mt-2 block w-full rounded-md border px-3 py-2 text-gray-900 shadow-sm placeholder:text-gray-400 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-            />
-          </div>
-
-          <div>
-            <button
-              type="button"
-              onClick={handleSubmit}
-              className="flex w-full justify-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus:ring-2 focus:ring-indigo-500"
-            >
-              Sign up
-            </button>
-          </div>
+          <button
+            type="button"
+            onClick={handleSubmit}
+            className="w-full py-3 mt-4 rounded-lg bg-indigo-600 text-white font-semibold shadow-md hover:bg-indigo-700 hover:shadow-lg transition-all duration-200"
+          >
+            + Add Book
+          </button>
         </form>
 
-  )
-}
+        {books.coverImage && (
+          <div className="mt-8 text-center">
+            <h3 className="text-sm text-gray-600 mb-2">Cover Preview</h3>
+            <div className="w-40 h-56 mx-auto rounded-lg overflow-hidden shadow-lg border border-gray-200">
+              <img
+                src={books.coverImage}
+                alt="Cover Preview"
+                className="object-cover w-full h-full"
+              />
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
 
-export default Addbook
+export default AddBooks;
