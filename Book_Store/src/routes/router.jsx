@@ -3,18 +3,18 @@ import Home from "../pages/Home";
 
 // Books
 import Books from "../pages/books/Books";
-import AddBook from "../pages/books/Addbook";
-import UpdateBook from "../pages/books/Updatebook";
+import AddBook from "../pages/books/AddBook";
+import UpdateBook from "../pages/books/UpdateBook";
 
 // Journals
 import Journals from "../pages/journals/Journals";
 import AddJournal from "../pages/journals/AddJournal";
-import UpdateJournal from "../pages/journals/Updatejournal";
+import UpdateJournal from "../pages/journals/UpdateJournal";
 
 // Comics
 import Comics from "../pages/comics/Comics";
-import AddComic from "../pages/comics/Addcomic";
-import UpdateComic from "../pages/comics/Updatecomic";
+import AddComic from "../pages/comics/AddComic";
+import UpdateComic from "../pages/comics/UpdateComic";
 
 const router = createBrowserRouter([
   {
