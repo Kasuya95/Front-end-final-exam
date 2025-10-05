@@ -3,7 +3,7 @@ import Home from "../pages/Home";
 
 // Books
 import Books from "../pages/books/books";
-import AddBook from "../pages/books/AddBook";
+import AddBook from "../pages/books/addBook";
 import UpdateBook from "../pages/books/UpdateBook";
 
 // Journals
