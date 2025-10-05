@@ -2,19 +2,19 @@ import { createBrowserRouter } from "react-router";
 import Home from "../pages/Home";
 
 // Books
-import Books from "../pages/books/books";
-import AddBook from "../pages/books/addBook";
-import UpdateBook from "../pages/books/UpdateBook";
+import Books from "../pages/books/Books";
+import AddBook from "../pages/books/Addbook";
+import UpdateBook from "../pages/books/Updatebook";
 
 // Journals
-import Journals from "../pages/journals/journals";
-import AddJournal from "../pages/journals/Addjournal";
-import UpdateJournal from "../pages/journals/updatejournal";
+import Journals from "../pages/journals/Journals";
+import AddJournal from "../pages/journals/AddJournal";
+import UpdateJournal from "../pages/journals/Updatejournal";
 
 // Comics
-import Comics from "../pages/comics/comics";
-import AddComic from "../pages/comics/addcomic";
-import UpdateComic from "../pages/comics/updatecomic";
+import Comics from "../pages/comics/Comics";
+import AddComic from "../pages/comics/Addcomic";
+import UpdateComic from "../pages/comics/Updatecomic";
 
 const router = createBrowserRouter([
   {
